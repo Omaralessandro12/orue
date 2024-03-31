@@ -13,7 +13,7 @@ from tensorflow.keras.applications import resnet50
 #Loading the Model
 model = load_model('object_classifier.h5', compile=False)
 
-st.image('logo.png')
+ 
 st.markdown("## Object Classifier App with Deep Learning")
 st.markdown("""
 This app uses Deep learning (ResNet50) libraries namely keras to identify objects from images.
