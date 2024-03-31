@@ -1,36 +1,54 @@
-import streamlit as st
+#Library imports
 import numpy as np
-from PIL import Image
+import streamlit as st
+import cv2
 from keras.models import load_model
+#import joblib
 from keras.preprocessing import image
+from io import BytesIO
+from tensorflow.keras.applications import resnet50
 
-# Load your trained model
-MODEL_PATH ='model_inception.h5'
-model = load_model(MODEL_PATH)
 
-# Function to make predictions
-def model_predict(img):
-    img = img.resize((224, 224))
-    img = np.array(img)
-    img = img / 255.0  # Normalize the image
-    img = np.expand_dims(img, axis=0)
-    preds = model.predict(img)
-    preds = np.argmax(preds, axis=1)
-    return preds
 
-# Streamlit app
-st.title('Plant Disease Classifier')
+#Loading the Model
+model = load_model('object_classifier.h5', compile=False)
 
-uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
+st.image('logo.png')
+st.markdown("## Object Classifier App with Deep Learning")
+st.markdown("""
+This app uses Deep learning (ResNet50) libraries namely keras to identify objects from images.
 
-if uploaded_file is not None:
-    # Display the uploaded image
-    image = Image.open(uploaded_file)
-    st.image(image, caption='Uploaded Image', use_column_width=True)
+ResNet-50 is a convolutional neural network that is 50 layers deep. You can load a pretrained version of the network trained on more than a million images from the ImageNet database. The pretrained network can classify images into 1000 object categories, such as keyboard, mouse, pencil, and many animals.
 
-    # Make prediction
-    if st.button('Predict'):
-        with st.spinner('Predicting...'):
-            prediction = model_predict(image)
-            st.success(f'The predicted class is {prediction}')
+**Made by Ifeanyi Nneji**
 
+""")
+
+#Name of Classes
+
+
+#Uploading the dog image
+object_image = st.file_uploader("Upload an image...", type=['png','jpg','webp','jpeg'])
+submit = st.button('Predict')
+#On predict button click
+if submit:
+
+    if object_image is not None:
+
+        # Convert the file to an opencv image.
+        file_bytes = np.asarray(bytearray(object_image.read()), dtype=np.uint8)
+        opencv_image = cv2.imdecode(file_bytes, 1)
+        st.image(opencv_image, channels="BGR")
+        opencv_image = cv2.resize(opencv_image, (224,224))
+        opencv_image.shape = (1,224,224,3)
+        predictions = model.predict(opencv_image)
+        predicted_classes = resnet50.decode_predictions(predictions, top=5)
+
+
+
+        # Displaying the image
+        #st.image(object_image, channels="BGR")
+        st.markdown("""This is an image of: """)
+
+        for imagenet_id, name, likelihood in predicted_classes[0]:
+            st.text('- {}: {:.2f} likelihood'.format(name,likelihood))
