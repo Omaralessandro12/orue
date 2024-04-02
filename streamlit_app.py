@@ -40,10 +40,10 @@ if submit:
 
         # Get predictions from the model
         predictions = model.predict(opencv_image)
-        predicted_classes = resnet50.decode_predictions(predictions, top=5)
+        predicted_classes = resnet50.decode_predictions(predictions, top=5)[0]  # Obtener las predicciones para la primera imagen en el lote
 
         # Displaying the image
         st.markdown("""This is an image of: """)
 
-        for imagenet_id, name, likelihood in predicted_classes[0]:
+        for imagenet_id, name, likelihood in predicted_classes:
             st.text('- {}: {:.2f} likelihood'.format(name, likelihood))
