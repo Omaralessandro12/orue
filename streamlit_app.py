@@ -11,7 +11,7 @@ from tensorflow.keras.applications import resnet50
 
 
 #Loading the Model
-model = load_model('model_inception.h5', compile=False)
+model = load_model('object_classifier.h5', compile=False)
 
  
 st.markdown("## Object Classifier App with Deep Learning")
