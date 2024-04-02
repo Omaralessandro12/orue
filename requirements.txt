@@ -1,5 +1,5 @@
-tensorflow
-Keras
-opencv-python-headless
-numpy
 streamlit
+tensorflow-cpu
+Pillow
+numpy
+protobuf
