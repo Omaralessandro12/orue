@@ -32,7 +32,7 @@ def prediction_cls(prediction):
 with st.sidebar:
         st.image('Mosca Blanca (1).jpg')
         st.title("mosca blanca")
-        st.subheader("Accurate detection of diseases present in the mango leaves. This helps an user to easily detect the disease and identify it's cause.")
+        st.subheader("Mosca blanca")
 
              
 @st.cache(allow_output_mutation=True)
