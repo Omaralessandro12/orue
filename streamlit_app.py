@@ -15,7 +15,7 @@ MODEL_PATH = 'modelo1_VGG16.h5'
 width_shape = 224
 height_shape = 224
 
-names = [ARAÑA ROJA','MOSCA BLANCA','MOSCA FRUTA','PULGON VERDE','PICUDO ROJO]
+names = ['ARAÑA ROJA','MOSCA BLANCA','MOSCA FRUTA','PULGON VERDE','PICUDO ROJO]
 
 
 
