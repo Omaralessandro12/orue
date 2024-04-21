@@ -1,40 +1,42 @@
-from tensorflow.keras.models import load_model
-from tensorflow.keras.applications.imagenet_utils import preprocess_input
-import numpy as np
+from tensorflow.keras.applications import VGG16
+from tensorflow.keras.preprocessing import image
+from tensorflow.keras.applications.vgg16 import preprocess_input
+from tensorflow.keras.models import Model
 
 import streamlit as st
-from PIL import Image
-from skimage.transform import resize
+import numpy as np
 
 # Path del modelo preentrenado
-MODEL_PATH = 'models_resnet50.h5'
+MODEL_PATH = 'modelo1_VGG16.h5'
 
-width_shape = 224
-height_shape = 224
+# Tamaño de entrada esperado por el modelo VGG16
+input_shape = (224, 224)
 
+# Clases de salida del modelo VGG16
 names = ['ARAÑA ROJA', 'MOSCA BLANCA', 'MOSCA FRUTA', 'PULGON VERDE', 'PICUDO ROJO']
 
+def load_and_preprocess_image(img):
+    img = img.resize(input_shape)
+    img = image.img_to_array(img)
+    img = np.expand_dims(img, axis=0)
+    img = preprocess_input(img)
+    return img
+
 def model_prediction(img, model):
-    img_resize = resize(img, (width_shape, height_shape))
-    x = preprocess_input(img_resize * 255)
-    x = np.expand_dims(x, axis=0)
-    
-    preds = model.predict(x)
+    img = load_and_preprocess_image(img)
+    preds = model.predict(img)
     return preds
 
 def main():
-    model = None
+    model = VGG16(weights='imagenet', include_top=True)
 
-    if model is None:
-        model = load_model(MODEL_PATH)
-    
     st.title("bichos :sunglasses:")
     
     predictS = ""
     img_file_buffer = st.file_uploader("Carga una imagen", type=["png", "jpg", "jpeg"])
     
     if img_file_buffer is not None:
-        image = np.array(Image.open(img_file_buffer))    
+        image = Image.open(img_file_buffer)
         st.image(image, caption="Imagen", use_column_width=False)
     
     if st.button("Predicción"):
