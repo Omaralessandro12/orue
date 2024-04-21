@@ -37,7 +37,7 @@ def main():
     if model=='':
         model = load_model(MODEL_PATH)
     
-    st.title("Clasificador de Aves :sunglasses:")
+    st.title("bichos :sunglasses:")
 
     predictS=""
     img_file_buffer = st.file_uploader("Carga una imagen", type=["png", "jpg", "jpeg"])
