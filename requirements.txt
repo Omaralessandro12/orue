@@ -1,7 +1,5 @@
-streamlit
-tensorflow
-tensorflow-cpu
-Pillow
-numpy
-scikit-image
+tensorflow>=2.0.0
+Pillow>=7.0.0
+numpy>=1.18.0
+scikit-image>=0.16.0
 
